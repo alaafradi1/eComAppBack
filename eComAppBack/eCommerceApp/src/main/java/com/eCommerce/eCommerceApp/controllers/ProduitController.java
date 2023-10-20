@@ -1,4 +1,4 @@
-package com.eCommerce.eCommerceApp.controller;
+package com.eCommerce.eCommerceApp.controllers;
 
 import java.util.List;
 
@@ -40,8 +40,8 @@ public class ProduitController {
 	public void addProduit(@RequestBody Produit c) {
 		c.setPourcentageRetour();
 		c.setRevenue();
-		c.getProduitDetail().setRevenueUnitaire(c.getProduitDetail().getRevenueUnitaire());
-		c.getCaisse().setRevenueTotale(cs.getTotalRevenue(c.getCaisse().getProductName()));
+		//c.getProduitDetail().setRevenueUnitaire(c.getProduitDetail().getRevenueUnitaire());
+	// commented alaa 03	c.getCaisse().setRevenueTotale(cs.getTotalRevenue(c.getCaisse().getProductName()));
 		ps.addProduit(c);
 	}
 	
@@ -50,8 +50,8 @@ public class ProduitController {
 	public void editProduit(@RequestBody Produit c) {
 		c.setPourcentageRetour();
 		c.setRevenue();
-		c.getProduitDetail().setRevenueUnitaire(c.getProduitDetail().getRevenueUnitaire());
-		c.getCaisse().setRevenueTotale(cs.getTotalRevenue(c.getCaisse().getProductName()));
+		//c.getProduitDetail().setRevenueUnitaire(c.getProduitDetail().getRevenueUnitaire());
+		// commented alaa 03	c.getCaisse().setRevenueTotale(cs.getTotalRevenue(c.getCaisse().getProductName()));
 		ps.editProduit(c);
 	}
 	

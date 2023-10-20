@@ -31,33 +31,33 @@ public class Produit {
 	private double pourcentageRetour; // calculable cbon
 	private double revenue; // calculable cbon
 	
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="fl_prod_detail")
-    private ProdDetail produitDetail;
+    // @OneToOne(cascade = CascadeType.ALL)
+    // @JoinColumn(name="fl_prod_detail")
+  //  private ProdDetail produitDetail;
     
     
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "caisse_id")
-    private Caisse caisse;
+    // @OneToOne(cascade = CascadeType.ALL)
+    // @JoinColumn(name = "caisse_id")
+   // private Caisse caisse;
     
     
 
     
-	public Caisse getCaisse() {
-		return caisse;
-	}
+	// public Caisse getCaisse() {
+	// 	return caisse;
+	// }
 
-	public void setCaisse(Caisse caisse) {
-		this.caisse = caisse;
-	}
+	// public void setCaisse(Caisse caisse) {
+	// 	this.caisse = caisse;
+	// }
 
-	public ProdDetail getProduitDetail() {
-		return produitDetail;
-	}
+	// public ProdDetail getProduitDetail() {
+	// 	return produitDetail;
+	// }
 
-	public void setProduitDetail(ProdDetail produitDetail) {
-		this.produitDetail = produitDetail;
-	}
+	// public void setProduitDetail(ProdDetail produitDetail) {
+	// 	this.produitDetail = produitDetail;
+	// }
 
 	public long getIdProduit() {
 		return idProduit;
@@ -136,19 +136,19 @@ public class Produit {
 	}
 
 	public void setRevenue() {
-	    if (produitDetail != null) {
-	        double prixSansLivraison = produitDetail.getPrixSansLivraison();
-	        double coutAchatUnitaire = produitDetail.getCoutAchatUnitaire();
-	        double calculatedRevenue = (colisPayer * prixSansLivraison) - (colisPayer * coutAchatUnitaire) - comTnd;
-	        System.out.println("prixSansLivraison : " + prixSansLivraison);
-	        System.out.println("coutAchatUnitaire : " + coutAchatUnitaire);
-	        System.out.println("comTnd : " + comTnd);
-	        System.out.println("calculated revenue : " + calculatedRevenue);
-	        // Set the revenue attribute with two decimal places
-	        this.revenue = Math.round(calculatedRevenue * 100.0) / 100.0;
-	    } else {
-	        this.revenue = 0.0; // Handle the case where no associated ProdDetail is set
-	    }
+	    // if (produitDetail != null) {
+	    //     double prixSansLivraison = produitDetail.getPrixSansLivraison();
+	    //     double coutAchatUnitaire = produitDetail.getCoutAchatUnitaire();
+	    //     double calculatedRevenue = (colisPayer * prixSansLivraison) - (colisPayer * coutAchatUnitaire) - comTnd;
+	    //     System.out.println("prixSansLivraison : " + prixSansLivraison);
+	    //     System.out.println("coutAchatUnitaire : " + coutAchatUnitaire);
+	    //     System.out.println("comTnd : " + comTnd);
+	    //     System.out.println("calculated revenue : " + calculatedRevenue);
+	    //     // Set the revenue attribute with two decimal places
+	    //     this.revenue = Math.round(calculatedRevenue * 100.0) / 100.0;
+	    // } else {
+	    //     this.revenue = 0.0; // Handle the case where no associated ProdDetail is set
+	    // }
 	}
 
 

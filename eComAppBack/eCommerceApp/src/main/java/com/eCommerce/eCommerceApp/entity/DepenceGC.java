@@ -24,18 +24,18 @@ public class DepenceGC {
 	private double montant;
 	private String nomMembre;
 	
-	@ManyToOne
-    @JoinColumn(name = "caisse_id")
-    private Caisse caisse;
+	//@ManyToOne
+  //  @JoinColumn(name = "caisse_id")
+   // private Caisse caisse;
 	
 
-	public void setCaisse(Caisse caisse) {
-		this.caisse = caisse;
-	}
+	// public void setCaisse(Caisse caisse) {
+	// 	this.caisse = caisse;
+	// }
 	
-	public Caisse getCaisse() {
-		return caisse;
-	}
+	// public Caisse getCaisse() {
+	// 	return caisse;
+	// }
 
 	public Long getIdDepence() {
 		return idDepence;
