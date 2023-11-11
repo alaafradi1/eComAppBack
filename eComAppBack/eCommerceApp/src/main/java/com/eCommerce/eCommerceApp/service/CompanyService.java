@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.eCommerce.eCommerceApp.entity.Caisse;
 import com.eCommerce.eCommerceApp.entity.Company;
+import com.eCommerce.eCommerceApp.entity.Product;
 import com.eCommerce.eCommerceApp.repository.CompanyRepository;
 
 @Service
@@ -26,6 +27,10 @@ public class CompanyService {
 
     public void deleteCompany(Long idCompany) {
         cr.deleteById(idCompany);
+    }
+
+    public void editCompany(Company c) {
+        cr.save(c);
     }
 
 }

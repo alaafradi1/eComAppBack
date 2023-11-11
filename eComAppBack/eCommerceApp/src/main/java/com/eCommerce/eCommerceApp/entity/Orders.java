@@ -17,34 +17,60 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.eCommerce.eCommerceApp.entity.Product;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 public class Orders {
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idCaisse;
-
+	private Long idOrder;
+    
     @Temporal(TemporalType.TIMESTAMP) 
 	private Date creationDate;
 
     private String state;
 	private String note;	
 	private String printState;
-    private String deliveryCompany;
-
+    private Float orderPrice;
+ 
+    // private String deliveryCompany;
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
    
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "client_id")
+    @JsonManagedReference
     private Client client;
+
+     // @JsonManagedReference
+    @ManyToOne
+    @JoinColumn(name = "idDC") 
+    private DeliveryCompany deliveryCompany;
 
     public Orders() {
         // setting the timeZone to tunisian timeZone
         TimeZone tunisianTimeZone = TimeZone.getTimeZone("Africa/Tunis");
         TimeZone.setDefault(tunisianTimeZone);
     }
+
+      public Number getOrderPrice() {
+        return orderPrice;
+    }
+
+    public void setOrderPrice(Float orderPrice) {
+        this.orderPrice = orderPrice;
+    }
+
+    public DeliveryCompany getDeliveryCompany() {
+        return deliveryCompany;
+    }
+
+    public void setDeliveryCompany(DeliveryCompany deliveryCompany) {
+        this.deliveryCompany = deliveryCompany;
+    }
+
 
      public Client getClient() {
         return client;
@@ -60,17 +86,21 @@ public class Orders {
     }
 
 
+    public Long getIdOrder() {
+        return idOrder;
+    }
+
     public void setProduct(Product product) {
         this.product = product;
     }
 
-    public String getDeliveryCompany() {
-        return deliveryCompany;
-    }
+    // public String getDeliveryCompany() {
+    //     return deliveryCompany;
+    // }
 
-    public void setDeliveryCompany(String deliveryCompany) {
-        this.deliveryCompany = deliveryCompany;
-    }
+    // public void setDeliveryCompany(String deliveryCompany) {
+    //     this.deliveryCompany = deliveryCompany;
+    // }
 
     public Date getCreationDate() {
         return creationDate;

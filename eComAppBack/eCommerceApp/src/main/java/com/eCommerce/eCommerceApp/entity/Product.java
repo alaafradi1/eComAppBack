@@ -13,6 +13,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.Id;
 
 @Entity
@@ -20,12 +24,15 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long productId;
-
     private String productName;
     private float productPrice;
     //private float productAddCost;
     private float productCost;
     
+    private Boolean isActive;
+    
+   
+
     @Temporal(TemporalType.TIMESTAMP) 
 	private Date creationDate;
 
@@ -33,9 +40,14 @@ public class Product {
     @JoinColumn(name = "company_id")
     private Company company;
 
+    //@JsonManagedReference
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Orders> orders;
 
+    public Long getProductId() {
+        return productId;
+    }
     public Date getCreationDate() {
         return creationDate;
     }
@@ -44,6 +56,13 @@ public class Product {
         this.creationDate = creationDate;
     }
 
+     public Boolean getIsActive() {
+        return isActive;
+    }
+
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
    
 
     public Company getCompany() {

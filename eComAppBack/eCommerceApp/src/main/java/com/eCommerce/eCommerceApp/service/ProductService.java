@@ -1,6 +1,7 @@
 package com.eCommerce.eCommerceApp.service;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -17,23 +18,37 @@ import com.eCommerce.eCommerceApp.repository.ProductRepository;
 @Service
 public class ProductService {
     @Autowired
-	ProductRepository pr;
+    ProductRepository pr;
     @Autowired
     CompanyRepository cr;
 
     public void addProduct(Map<String, String> productWithCompany) {
         Product product = new Product();
-        Company company =  cr.findById(Long.parseLong(productWithCompany.get("idCompany"))).get();
+        Company company = cr.findById(Long.parseLong(productWithCompany.get("idCompany"))).get();
         product.setCompany(company);
-       // product.setProductAddCost(Float.parseFloat(productWithCompany.get("productAddCost")));
+        // product.setProductAddCost(Float.parseFloat(productWithCompany.get("productAddCost")));
         product.setProductCost(Float.parseFloat(productWithCompany.get("productCost")));
         product.setProductName(productWithCompany.get("productName"));
         product.setProductPrice(Float.parseFloat(productWithCompany.get("productPrice")));
+
+        product.setIsActive(true);
+
         Calendar calendar = Calendar.getInstance();
-		product.setCreationDate(calendar.getTime());
-		pr.save(product);
-	}
+        product.setCreationDate(calendar.getTime());
+        pr.save(product);
+    }
 
+    public List<Product> getAllProducts() {
+        return pr.findAll();
+    }
 
+    public List<Product> getActiveProducts() {
+        return pr.findByIsActiveTrue();
+    }
+
+    public void editProduct(Product product) {
+        pr.save(product);
+    }
     
+
 }

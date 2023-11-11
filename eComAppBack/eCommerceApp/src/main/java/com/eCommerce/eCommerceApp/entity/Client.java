@@ -13,20 +13,27 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 public class Client {
-     @Id
+    @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idCaisse;
+	private Long idClient;
 
+   
     @Temporal(TemporalType.TIMESTAMP) 
 	private Date creationDate;
     private String name;
 	private String address;	
 	private String phoneNumber;
     private String governorate;
+    private String phoneNumber2;
+
+   
 
     @OneToOne(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonBackReference
     private Orders order;
 
     public Client() {
@@ -34,6 +41,11 @@ public class Client {
         TimeZone tunisianTimeZone = TimeZone.getTimeZone("Africa/Tunis");
         TimeZone.setDefault(tunisianTimeZone);
     }
+
+     public Long getIdClient() {
+        return idClient;
+    }
+
 
     public Date getCreationDate() {
         return creationDate;
@@ -49,6 +61,14 @@ public class Client {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+     public String getPhoneNumber2() {
+        return phoneNumber2;
+    }
+
+    public void setPhoneNumber2(String phoneNumber2) {
+        this.phoneNumber2 = phoneNumber2;
     }
 
     public String getAddress() {
