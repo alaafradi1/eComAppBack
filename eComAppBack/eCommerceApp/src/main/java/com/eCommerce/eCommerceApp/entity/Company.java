@@ -27,6 +27,8 @@ public class Company {
     private String companyName;
     @Temporal(TemporalType.TIMESTAMP)
     private Date creationDate;
+   
+    private String rowColor;
     private Boolean isActive;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -40,7 +42,14 @@ public class Company {
         TimeZone tunisianTimeZone = TimeZone.getTimeZone("Africa/Tunis");
         TimeZone.setDefault(tunisianTimeZone);
     }
+ 
+    public String getRowColor() {
+        return rowColor;
+    }
 
+    public void setRowColor(String rowColor) {
+        this.rowColor = rowColor;
+    }
     // Getter and setter methods for 'companyName'
     public String getCompanyName() {
         return companyName;

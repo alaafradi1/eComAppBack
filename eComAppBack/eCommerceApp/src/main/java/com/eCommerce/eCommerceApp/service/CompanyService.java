@@ -25,6 +25,10 @@ public class CompanyService {
         return cr.findAll();
     }
 
+    public List<Company> getActiveCompanies() {
+        return cr.findByIsActiveTrue();
+    }
+
     public void deleteCompany(Long idCompany) {
         cr.deleteById(idCompany);
     }

@@ -1,5 +1,6 @@
 package com.eCommerce.eCommerceApp.entity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.OrderBy;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -26,9 +29,9 @@ public class Product {
     private Long productId;
     private String productName;
     private float productPrice;
-    //private float productAddCost;
-    private float productCost;
     
+    
+    private String rowColor;
     private Boolean isActive;
     
    
@@ -40,11 +43,67 @@ public class Product {
     @JoinColumn(name = "company_id")
     private Company company;
 
-    //@JsonManagedReference
+    @JsonManagedReference
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
     private List<Orders> orders;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<OrderProduct> orderProducts = new ArrayList<>();
+    
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Compaign> compaigns = new ArrayList<>();
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    // @JsonIgnore
+    @OrderBy("creationDate DESC")
+    private List<ProductCost> costs;
+
+    // @OneToOne(cascade = CascadeType.ALL, mappedBy = "product")
+    // @JoinColumn(name = "current_cost_id")
+    private Long currentCostId;
+
+
+      public List<Compaign> getCompaigns() {
+        return compaigns;
+    }
+
+    public void setCompaigns(List<Compaign> compaigns) {
+        this.compaigns = compaigns;
+    }
+    
+    public Long getCurrentCostId() {
+        return currentCostId;
+    }
+
+    public void setCurrentCostId(Long currentCostId) {
+        this.currentCostId = currentCostId;
+    }
+
+    public List<ProductCost> getCosts() {
+        return costs;
+    }
+
+    public void setCosts(List<ProductCost> costs) {
+        this.costs = costs;
+    }
+
+    public String getRowColor() {
+        return rowColor;
+    }
+
+    public void setRowColor(String rowColor) {
+        this.rowColor = rowColor;
+    }
+
+    public List<OrderProduct> getOrderProducts() {
+        return orderProducts;
+    }
+    public void setOrderProducts(List<OrderProduct> orderProducts) {
+        this.orderProducts = orderProducts;
+    }
     public Long getProductId() {
         return productId;
     }
@@ -81,13 +140,13 @@ public class Product {
         this.productPrice = productPrice;
     }
 
-    public float getProductCost() {
-        return productCost;
-    }
+    // public float getProductCost() {
+    //     return productCost;
+    // }
 
-    public void setProductCost(float productCost) {
-        this.productCost = productCost;
-    }
+    // public void setProductCost(float productCost) {
+    //     this.productCost = productCost;
+    // }
 
     // public float getProductAddCost() {
     //     return productAddCost;

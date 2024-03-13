@@ -13,18 +13,27 @@ import javax.persistence.TemporalType;
 @Entity
 public class History {
     @Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idHistory;
-	private String type;
-    @Temporal(TemporalType.TIMESTAMP) 
-	private Date creationDate;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idHistory;
+    private String type; // Caisse-Product-Entreprise-Order
+    private String operation; // add/edit/Delete
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date creationDate;
     private String description;
-    private String reason;
+    private String reason; // for the delete.
 
-    public History(){
+    public History() {
         // setting the timeZone to tunisian timeZone
-		TimeZone tunisianTimeZone = TimeZone.getTimeZone("Africa/Tunis");
+        TimeZone tunisianTimeZone = TimeZone.getTimeZone("Africa/Tunis");
         TimeZone.setDefault(tunisianTimeZone);
+    }
+
+    public String getOperation() {
+        return operation;
+    }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
     }
 
     // Getter and setter methods for 'type'
@@ -36,7 +45,7 @@ public class History {
         this.type = type;
     }
 
-     // Getter and setter methods for 'description'
+    // Getter and setter methods for 'description'
     public String getDescription() {
         return description;
     }
@@ -45,7 +54,7 @@ public class History {
         this.description = description;
     }
 
-     // Getter and setter methods for 'reason'
+    // Getter and setter methods for 'reason'
     public String getReason() {
         return reason;
     }
@@ -62,6 +71,5 @@ public class History {
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
-
 
 }

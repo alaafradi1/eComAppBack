@@ -18,7 +18,27 @@ public class HistoryService {
     public void addCaisseHistory(Caisse c) {      
         History history = new History();
         history.setType("Caisse");
+        history.setOperation("Add");
         String description = "A "+c.getType() +" of "+c.getAmount()+"DT was ADDED at "+c.getCreationDate();
+        history.setDescription(description);
+		history.setCreationDate(c.getCreationDate());
+        hr.save(history);
+    }
+
+    public void addHistory(String type, String operation, String description) {      
+        Calendar calendar = Calendar.getInstance();
+        History history = new History();
+        history.setType(type);
+        history.setOperation(operation);
+        history.setDescription(description);
+		history.setCreationDate(calendar.getTime());
+        hr.save(history);
+    }
+
+     public void editCaisseHistory(Caisse c) {      
+        History history = new History();
+        history.setType("Caisse");
+        String description = "A "+c.getType() +" of "+c.getAmount()+"DT was EDITED at "+c.getCreationDate();
         history.setDescription(description);
 		history.setCreationDate(c.getCreationDate());
         hr.save(history);

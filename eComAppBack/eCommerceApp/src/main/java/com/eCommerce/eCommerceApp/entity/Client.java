@@ -32,7 +32,7 @@ public class Client {
 
    
 
-    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "client", cascade = CascadeType.ALL, optional = true, fetch = FetchType.LAZY)
     @JsonBackReference
     private Orders order;
 

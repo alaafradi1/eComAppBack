@@ -81,6 +81,8 @@ public class CompanyController {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Company not found");
 			}
 			existingCompany.setCompanyName(companyInfo.get("companyName"));
+			existingCompany.setRowColor(companyInfo.get("color"));
+			
 			cs.editCompany(existingCompany);
 			return ResponseEntity.ok("company updated successfully");
 		} catch (Exception e) {

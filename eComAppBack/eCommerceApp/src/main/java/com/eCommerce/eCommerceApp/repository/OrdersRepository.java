@@ -1,6 +1,7 @@
 package com.eCommerce.eCommerceApp.repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -24,4 +25,14 @@ public interface OrdersRepository extends JpaRepository<Orders, Long> {
 
     List<Orders> findByCreationDateBetweenAndProductIsActiveTrueAndDeliveryCompanyIsActiveTrue(Date start, Date end);
 
+    List<Orders> findDistinctByCreationDateBetweenAndDeliveryCompany_IsActiveAndOrderProducts_Product_IsActiveOrderByCreationDate(
+        Date startDate, Date endDate, boolean productIsActive, boolean deliveryCompanyIsActive);
+
+
+        @Query("SELECT p.productName, COUNT(op.order.idOrder), o.state, COUNT(op.order.idOrder) " +
+            "FROM OrderProduct op " +
+            "JOIN op.order o " +
+            "JOIN op.product p " +
+            "GROUP BY p.productName, o.state")
+    List<Object[]> getProductStatistics();
 }

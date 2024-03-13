@@ -67,23 +67,50 @@ public class ProductController {
 		}
 	}
 
+	// @PutMapping("/editProduct/{productId}")
+	// public ResponseEntity<String> editProduct(@PathVariable Long productId,@RequestBody Map<String, String> productWithCompanyId) {
+	// 	try {
+	// 		Product existingProduct = pr.findById(productId).get();
+	// 		if (existingProduct == null) {
+	// 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found using productId");
+	// 		}
+
+	// 		existingProduct.setProductName(productWithCompanyId.get("productName"));
+	// 		existingProduct.setRowColor(productWithCompanyId.get("rowColor"));
+	// 		existingProduct.setProductPrice(Float.parseFloat(productWithCompanyId.get("productPrice")));
+	// 		existingProduct.setProductCost(Float.parseFloat(productWithCompanyId.get("productCost")));
+	// 		Company newCompany = cr.findById(Long.parseLong(productWithCompanyId.get("idCompany"))).get();
+	// 		existingProduct.setCompany(newCompany);
+	// 		// Update other fields as needed
+
+	// 		// Save the updated product back to the database
+	// 		ps.editProduct(existingProduct);
+
+	// 		return ResponseEntity.ok("Product updated successfully");
+	// 	} catch (Exception e) {
+	// 		String errorMessage = "Error updating product: " + e.getMessage();
+	// 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
+	// 	}
+	// }
+
 	@PutMapping("/editProduct/{productId}")
 	public ResponseEntity<String> editProduct(@PathVariable Long productId,@RequestBody Map<String, String> productWithCompanyId) {
 		try {
-			Product existingProduct = pr.findById(productId).get();
-			if (existingProduct == null) {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found");
-			}
+			// Product existingProduct = pr.findById(productId).get();
+			// if (existingProduct == null) {
+			// 	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found using productId");
+			// }
 
-			existingProduct.setProductName(productWithCompanyId.get("productName"));
-			existingProduct.setProductPrice(Float.parseFloat(productWithCompanyId.get("productPrice")));
-			existingProduct.setProductCost(Float.parseFloat(productWithCompanyId.get("productCost")));
-			Company newCompany = cr.findById(Long.parseLong(productWithCompanyId.get("idCompany"))).get();
-			existingProduct.setCompany(newCompany);
-			// Update other fields as needed
+			// existingProduct.setProductName(productWithCompanyId.get("productName"));
+			// existingProduct.setRowColor(productWithCompanyId.get("rowColor"));
+			// existingProduct.setProductPrice(Float.parseFloat(productWithCompanyId.get("productPrice")));
+			// existingProduct.setProductCost(Float.parseFloat(productWithCompanyId.get("productCost")));
+			// Company newCompany = cr.findById(Long.parseLong(productWithCompanyId.get("idCompany"))).get();
+			// existingProduct.setCompany(newCompany);
+			// // Update other fields as needed
 
-			// Save the updated product back to the database
-			ps.editProduct(existingProduct);
+			// // Save the updated product back to the database
+			ps.editProduct( productId,productWithCompanyId);
 
 			return ResponseEntity.ok("Product updated successfully");
 		} catch (Exception e) {
@@ -105,7 +132,8 @@ public class ProductController {
 			// Update other fields as needed
 
 			// Save the updated product back to the database
-			ps.editProduct(existingProduct);
+			// ps.editProduct(existingProduct);
+			ps.activateProduct(existingProduct);
 
 			return ResponseEntity.ok("Product activation successfully");
 		} catch (Exception e) {
