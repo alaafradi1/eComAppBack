@@ -12,4 +12,6 @@ public interface  OrderProductRepository  extends JpaRepository<OrderProduct, Lo
     @Transactional
     @Query("DELETE FROM OrderProduct op WHERE op.id = ?1")
     void deleteOrderProductById(Long orderProductId);
+
+
 }

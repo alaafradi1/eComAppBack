@@ -10,21 +10,19 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
-@EnableSwagger2 // addition alaa 01
+@EnableSwagger2
 public class ECommerceAppApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ECommerceAppApplication.class, args);
 	}
-	// addition alaa 01
-	public Docket api() { 
+	public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)  
           .select()                                  
           .apis(RequestHandlerSelectors.any())              
           .paths(PathSelectors.any())                          
           .build();                                           
     }
-	// end addition 
 
 
 }

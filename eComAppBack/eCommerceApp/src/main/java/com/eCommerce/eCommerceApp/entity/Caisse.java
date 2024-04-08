@@ -28,9 +28,13 @@ public class Caisse {
 	private Date creationDate;// the date when the caisse is added
     private Date operationDate;// the date when the operation was done by the company
 	private String type;// a Revenu(+) or a Depense(-)
+    private String Origin; // office, Product, campaign
 	private String involvedParty;	
 	private String description;
-	
+
+    @OneToOne
+    @JoinColumn(name = "campaign_id")
+    private Campaign campaign;
 
     @OneToOne
     @JoinColumn(name = "product_id")
@@ -115,4 +119,19 @@ public class Caisse {
         this.description = description;
     }
 
+    public Campaign getCampaign() {
+        return campaign;
+    }
+
+    public void setCampaign(Campaign campaign) {
+        this.campaign = campaign;
+    }
+
+    public String getOrigin() {
+        return Origin;
+    }
+
+    public void setOrigin(String origin) {
+        Origin = origin;
+    }
 }

@@ -110,9 +110,10 @@ public class ProductController {
 			// // Update other fields as needed
 
 			// // Save the updated product back to the database
-			ps.editProduct( productId,productWithCompanyId);
+			ResponseEntity response = ps.editProduct( productId,productWithCompanyId);
 
-			return ResponseEntity.ok("Product updated successfully");
+			//return ResponseEntity.ok("Product updated successfully");
+			return response ;
 		} catch (Exception e) {
 			String errorMessage = "Error updating product: " + e.getMessage();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);

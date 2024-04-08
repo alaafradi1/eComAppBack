@@ -2,13 +2,9 @@ package com.eCommerce.eCommerceApp.controllers;
 
 import java.util.List;
 import java.util.Map;
-
-import org.springframework.ui.Model;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,17 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eCommerce.eCommerceApp.entity.Caisse;
-import com.eCommerce.eCommerceApp.entity.Company;
-import com.eCommerce.eCommerceApp.entity.Orders;
-import com.eCommerce.eCommerceApp.entity.Product;
 import com.eCommerce.eCommerceApp.service.CaisseService;
-import com.eCommerce.eCommerceApp.service.DepenceGCService;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.util.Calendar;
-import java.util.Date;
-
 @RestController
 @CrossOrigin("*")
 public class CaisseController {
@@ -117,20 +103,4 @@ public class CaisseController {
 		}
 	}
 
-	// @PostMapping("/addCaisseInfo")
-	// public void addCaisseInfo(@RequestBody Caisse c) {
-	// c.setRevenueTotale(cs.getTotalRevenue(c.getProductName()));
-	// cs.addInfo(c);
-	// }
-
-	// @PutMapping("/updateCaisseInfo")
-	// public void editCaisseInfo(@RequestBody Caisse c) {
-	// c.setRevenueTotale(cs.getTotalRevenue(c.getProductName())-cs.getMontant(c.getProductName()));
-	// cs.editInfo(c);
-	// }
-
-	// @DeleteMapping("/deleteCaisseInfo/{id}")
-	// public void deleteCaisseInfo(@PathVariable int id) {
-	// cs.deleteInfo(id);
-	// }
 }

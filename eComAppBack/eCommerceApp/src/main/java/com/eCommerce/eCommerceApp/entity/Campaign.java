@@ -12,61 +12,69 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
-public class Compaign {
+public class Campaign {
     @Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idCompaign;
+	private Long idcampaign;
 
     @Temporal(TemporalType.TIMESTAMP) 
 	private Date creationDate;// the date when the caisse is added
    
     private String name;// a Revenu(+) or a Depense(-)
-	private String description;	
+	private String description;
 
     @ManyToOne
     // @MapsId("productId")
     @JoinColumn(name = "productId")
     private Product product;
 
-    // @OneToMany(mappedBy = "compaign", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    // // @JsonIgnore
-    // @OrderBy("creationDate DESC")
-    // private List<CompaignCost> costs;
+    @OneToMany(mappedBy = "campaign", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    // @JsonIgnore
+    @OrderBy("creationDate DESC")
+    private List<CampaignCost> costs;
 
-    // private Long currentCostId;
+    private Long currentCostId ;
 
-    @OneToOne
-    private CompaignCost currentCost;
+    /** newCostId : when updating the campaign's cost, the cost should stay the same until the end of the day '00:00',
+     *  and when the day ends, it should be updated, that y the new cost value will be created and inserted in the 'newCostId' until the day ends.**/
+    private Long newCostId ;
 
-    @OneToOne
-    private CompaignCost newCost;
+    private Boolean isActive; // when changed, it needs to be changed at the end of the day.
+    private Boolean newIsActive;
 
-
-    public CompaignCost getCurrentCost() {
-        return currentCost;
+    public List<CampaignCost> getCosts() {
+        return costs;
     }
 
-    public void setCurrentCost(CompaignCost currentCost) {
-        this.currentCost = currentCost;
+    public void setCosts(List<CampaignCost> costs) {
+        this.costs = costs;
     }
 
-    public CompaignCost getNewCost() {
-        return newCost;
+    public Long getIdcampaign() {
+        return idcampaign;
     }
 
-    public void setNewCost(CompaignCost newCost) {
-        this.newCost = newCost;
+    public Long getNewCostId() {
+        return newCostId;
     }
 
-    private Boolean isActive;
+    public void setNewCostId(Long newCostId) {
+        this.newCostId = newCostId;
+    }
+    public Long getCurrentCostId() {
+        return currentCostId;
+    }
 
-    
+    public void setCurrentCostId(Long currentCostId) {
+        this.currentCostId = currentCostId;
+    }
+
+
     public Boolean getIsActive() {
         return isActive;
     }
@@ -91,11 +99,11 @@ public class Compaign {
         this.creationDate = creationDate;
     }
 
-    // public List<CompaignCost> getCosts() {
+    // public List<CampaignCost> getCosts() {
     //     return costs;
     // }
 
-    // public void setCosts(List<CompaignCost> costs) {
+    // public void setCosts(List<CampaignCost> costs) {
     //     this.costs = costs;
     // }
 
@@ -123,6 +131,12 @@ public class Compaign {
         this.product = product;
     }
 
-    
-    
+
+    public Boolean getNewIsActive() {
+        return newIsActive;
+    }
+
+    public void setNewIsActive(Boolean newIsActive) {
+        this.newIsActive = newIsActive;
+    }
 }

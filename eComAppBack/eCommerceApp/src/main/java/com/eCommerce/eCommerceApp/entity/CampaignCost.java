@@ -7,18 +7,18 @@ import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class CompaignCost extends Cost {
+public class CampaignCost extends Cost {
     
     @ManyToOne
-    @JoinColumn(name = "compaign_id")
+    @JoinColumn(name = "campaign_id")
     @JsonIgnore
-    private Compaign compaign;
+    private Campaign campaign;
 
-    public Compaign getCompaign() {
-        return compaign;
+    public Campaign getcampaign() {
+        return campaign;
     }
 
-    public void setCompaign(Compaign compaign) {
-        this.compaign = compaign;
+    public void setcampaign(Campaign campaign) {
+        this.campaign = campaign;
     }
 }

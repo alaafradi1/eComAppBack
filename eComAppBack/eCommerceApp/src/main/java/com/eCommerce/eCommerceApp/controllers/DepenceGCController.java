@@ -22,26 +22,26 @@ import com.eCommerce.eCommerceApp.service.DepenceGCService;
 public class DepenceGCController {
 	
 	@Autowired
-	DepenceGCService dgcs;
+	DepenceGCService depenceGCService;
 	
 	@GetMapping("/allDepenceInfo")
 	public List <DepenceGC> getAllDepenceInfo(){
-		return dgcs.getAllDepencesGC();
+		return depenceGCService.getAllDepencesGC();
 	}
 	
 	@PostMapping("/addDepenceInfo")
 	public void addDepenceInfo(@RequestBody DepenceGC c) {
-		dgcs.updRevenueCaisse(c.getNomArticle(), c.getMontant());
-		dgcs.addDepencesGC(c);
+		depenceGCService.updRevenueCaisse(c.getNomArticle(), c.getMontant());
+		depenceGCService.addDepencesGC(c);
 	}
 	
 	@PutMapping("/updateDepenceInfo")
 	public void editDepenceInfo(@RequestBody DepenceGC c) {
-		dgcs.updateDepencesGC(c);
+		depenceGCService.updateDepencesGC(c);
 	}
 	
 	@DeleteMapping("/deleteDepenceInfo/{id}")
 	public void deleteDepenceInfo(@PathVariable int id) {
-		dgcs.deleteDepencesGC(id);
+		depenceGCService.deleteDepencesGC(id);
 	}
 }

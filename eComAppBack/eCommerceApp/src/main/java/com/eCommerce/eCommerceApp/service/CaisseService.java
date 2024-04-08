@@ -14,6 +14,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import java.util.Map;
+
+import com.eCommerce.eCommerceApp.entity.Campaign;
+import com.eCommerce.eCommerceApp.repository.CampaignRepostiroy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,16 +35,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class CaisseService {
 
 	@Autowired
-	CaisseRepository cr;
+	CaisseRepository caisseRep;
 
 	@Autowired
-	HistoryService hs;
+	HistoryService historyService;
 
 	@Autowired
-	ProductRepository pr;
+	ProductRepository productRep;
+
+	@Autowired
+	CampaignRepostiroy campaignRep;
 
 	public List<Caisse> getAllCaisses() {
-		return cr.findAll();
+		return caisseRep.findAll();
 	}
 
 	public Map<String, String> getStatisticsByCriteria(String criteria) {
@@ -57,8 +63,8 @@ public class CaisseService {
 	}
 
 	public Map<String, String> getAllCaisseStatistics() {
-		Double sumOfAllRevenuAmount = cr.getSumOfAllRevenuAmount();
-		Double sumOfAllDepenseAmount = cr.getSumOfAllDepenseAmount();
+		Double sumOfAllRevenuAmount = caisseRep.getSumOfAllRevenuAmount();
+		Double sumOfAllDepenseAmount = caisseRep.getSumOfAllDepenseAmount();
 		Map<String, String> result = new HashMap<>();
 		result.put("sumOfRevenuAmount", sumOfAllRevenuAmount != null ? sumOfAllRevenuAmount.toString() : "0.0");
 		result.put("sumOfDepenseAmount", sumOfAllDepenseAmount != null ? sumOfAllDepenseAmount.toString() : "0.0");
@@ -66,8 +72,8 @@ public class CaisseService {
 	}
 
 	public Map<String, String> getCaisseStatisticsWithNullProductId() {
-		Double sumOfAllRevenuAmount = cr.getSumOfRevenuAmountWithNullProductId();
-		Double sumOfAllDepenseAmount = cr.getSumOfDepenseAmountWithNullProductId();
+		Double sumOfAllRevenuAmount = caisseRep.getSumOfRevenuAmountWithNullProductId();
+		Double sumOfAllDepenseAmount = caisseRep.getSumOfDepenseAmountWithNullProductId();
 		Map<String, String> result = new HashMap<>();
 		result.put("sumOfRevenuAmount", sumOfAllRevenuAmount != null ? sumOfAllRevenuAmount.toString() : "0.0");
 		result.put("sumOfDepenseAmount", sumOfAllDepenseAmount != null ? sumOfAllDepenseAmount.toString() : "0.0");
@@ -75,8 +81,8 @@ public class CaisseService {
 	}
 
 	public Map<String, String> getCaisseStatisticsWithProductId(Long productId) {
-		Double sumOfAllRevenuAmount = cr.getSumOfRevenuAmountWithProductId(productId);
-		Double sumOfAllDepenseAmount = cr.getSumOfDepenseAmountWithProductId(productId);
+		Double sumOfAllRevenuAmount = caisseRep.getSumOfRevenuAmountWithProductId(productId);
+		Double sumOfAllDepenseAmount = caisseRep.getSumOfDepenseAmountWithProductId(productId);
 		Map<String, String> result = new HashMap<>();
 		result.put("sumOfRevenuAmount", sumOfAllRevenuAmount != null ? sumOfAllRevenuAmount.toString() : "0.0");
 		result.put("sumOfDepenseAmount", sumOfAllDepenseAmount != null ? sumOfAllDepenseAmount.toString() : "0.0");
@@ -94,7 +100,13 @@ public class CaisseService {
 		caisse.setAmount(Float.parseFloat(caisseInfo.get("amount")));
 
 		if (caisseInfo.get("productId") != null) {
-			caisse.setProduct(pr.findById(Long.parseLong(caisseInfo.get("productId"))).get());
+			caisse.setProduct(productRep.findById(Long.parseLong(caisseInfo.get("productId"))).get());
+		}
+
+		if (caisseInfo.get("campaignId") != null) {
+			Long campaignId = Long.parseLong(caisseInfo.get("campaignId") );
+			Campaign campaign = campaignRep.findById(campaignId).get();
+			caisse.setCampaign(campaign);
 		}
 
 		if (caisseInfo.get("operationDate") != null) {
@@ -102,10 +114,12 @@ public class CaisseService {
 			caisse.setOperationDate(Date.from(operationDate.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 		}
 
+		caisse.setOrigin(caisseInfo.get("origin"));
+
 		caisse.setType(caisseInfo.get("type"));
 
-		cr.save(caisse);
-		hs.addCaisseHistory(caisse);
+		caisseRep.save(caisse);
+		historyService.addCaisseHistory(caisse);
 	}
 
 	public ResponseEntity<String> addMultipleCaisses(List<Map<String, String>> caissesInfo) {
@@ -119,9 +133,8 @@ public class CaisseService {
 			caisseMap.put("description", caisseInfo.get("Description"));
 			caisseMap.put("involvedParty", caisseInfo.get("involvedParty"));
 			caisseMap.put("type", caisseInfo.get("Type"));
-			// caisseMap.put("productId", caisseInfo.get("productId"));
+			caisseMap.put("origin", caisseInfo.get("origin"));
 
-			// settign the productId to null if it is "Bureau" in excel
 			String productId = caisseInfo.get("productId");
 			productId = "Bureau".equals(productId) ? null : productId;
 			caisseMap.put("productId",productId );
@@ -161,7 +174,7 @@ public class CaisseService {
 	public ResponseEntity<String> editCaisse(Long caisseId, Map<String, String> caisseInfo) {
 		try {
 
-			Caisse existingCaisse = cr.findById(caisseId).get();
+			Caisse existingCaisse = caisseRep.findById(caisseId).get();
 			if (existingCaisse == null) {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Caisse not found using caisseId");
 			}
@@ -175,8 +188,10 @@ public class CaisseService {
 			existingCaisse.setAmount(Float.parseFloat(caisseInfo.get("amount")));
 			existingCaisse.setType(caisseInfo.get("type"));
 
-			cr.save(existingCaisse);
-			hs.addHistory("Caisse", "Edit", historyDescriptionFirstPart + historyDescription);
+			existingCaisse.setOrigin(caisseInfo.get("origin"));
+
+			caisseRep.save(existingCaisse);
+			historyService.addHistory("Caisse", "Edit", historyDescriptionFirstPart + historyDescription);
 			return ResponseEntity.ok("Caisse updated successfully");
 
 		} catch (Exception e) {
@@ -209,61 +224,22 @@ public class CaisseService {
 		calendar.add(Calendar.DAY_OF_MONTH, 1);
 		end = calendar.getTime();
 
-		return cr.findByCreationDateBetween(start, end);
+		return caisseRep.findByCreationDateBetween(start, end);
 	}
 
 	public void deleteCaisse(Long idCaisse) {
-		Caisse exitingCaisse = cr.findById(idCaisse).get();
-		cr.deleteById(idCaisse);
+		Caisse exitingCaisse = caisseRep.findById(idCaisse).get();
+		caisseRep.deleteById(idCaisse);
 		if (exitingCaisse != null) {
 			String historyDeleteDescription = "caisseId= " + exitingCaisse.getIdCaisse() +
 					" || Amount= " + exitingCaisse.getAmount() +
 					" || Type=" + exitingCaisse.getType() +
 					" || Description= " + exitingCaisse.getDescription();
 
-			hs.addHistory("Caisse", "Delete", historyDeleteDescription);
+			historyService.addHistory("Caisse", "Delete", historyDeleteDescription);
 		} else {
 			System.out.println("the delete history of delete caisse has failed");
 		}
 	}
 
-	// @PersistenceContext
-	// private EntityManager entityManager;
-
-	// public Double getTotalRevenue(String nomProduit) {
-	// System.out.println("le nomProduit est : "+nomProduit);
-	// //String jpql = "SELECT SUM(p.revenue) FROM Produit p WHERE
-	// p.produitDetail.nomArticle = :nomArt";
-	// String jpql = "SELECT SUM(c.prix) FROM CreerColis c WHERE c.nomProduit =
-	// :nomArt";
-	// TypedQuery<Double> query = entityManager.createQuery(jpql, Double.class);
-	// query.setParameter("nomArt", nomProduit);
-	// Double totalRevenue = query.getSingleResult();
-	// System.out.println("le revenue tot est : "+totalRevenue);
-	// return (totalRevenue != null) ? totalRevenue : 0.0;
-	// }
-	// //String jpql = "SELECT SUM(p.revenue) FROM Produit p WHERE
-	// p.produitDetail.nomArticle = 'germancare' ";
-
-	// public Double getMontant(String nomArticle) {
-	// String jpql = "SELECT p.montant FROM DepenceGC p WHERE p.nomArticle =
-	// :nomArtc";
-	// TypedQuery<Double> query = entityManager.createQuery(jpql, Double.class);
-	// query.setParameter("nomArtc", nomArticle);
-	// Double totalRevenue = query.getSingleResult();
-	// System.out.println("totalRevenue : " + totalRevenue);
-	// return (totalRevenue != null) ? totalRevenue : 0.0;
-	// }
-
-	// // public List<Caisse> getAllInfos(){
-	// // return cr.findAll();
-	// // }
-
-	// public void editInfo(Caisse c) {
-	// cr.save(c);
-	// }
-
-	// public void deleteInfo(int id) {
-	// // cr.deleteById(id);
-	// }
 }

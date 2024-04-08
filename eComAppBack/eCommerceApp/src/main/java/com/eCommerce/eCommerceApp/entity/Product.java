@@ -12,7 +12,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -21,7 +20,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.Id;
-
 @Entity
 public class Product {
     @Id
@@ -54,7 +52,7 @@ public class Product {
     
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JsonIgnore
-    private List<Compaign> compaigns = new ArrayList<>();
+    private List<Campaign> campaigns = new ArrayList<>();
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     // @JsonIgnore
@@ -66,12 +64,12 @@ public class Product {
     private Long currentCostId;
 
 
-      public List<Compaign> getCompaigns() {
-        return compaigns;
+      public List<Campaign> getcampaigns() {
+        return campaigns;
     }
 
-    public void setCompaigns(List<Compaign> compaigns) {
-        this.compaigns = compaigns;
+    public void setcampaigns(List<Campaign> campaigns) {
+        this.campaigns = campaigns;
     }
     
     public Long getCurrentCostId() {
