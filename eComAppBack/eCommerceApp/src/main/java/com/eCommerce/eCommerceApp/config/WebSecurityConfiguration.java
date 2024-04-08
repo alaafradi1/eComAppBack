@@ -29,12 +29,20 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors();
         http.csrf().disable(); // Disable CSRF protection for testing
-        http.authorizeRequests()
-            .antMatchers("/").permitAll()
-            .antMatchers("/**").hasAnyAuthority("USER", "ADMIN")
+        // edit alaa 00
+        // http.authorizeRequests()
+        //     .antMatchers("/").permitAll()
+        //     .antMatchers("/**").hasAnyAuthority("USER", "ADMIN")
 
+        //     .anyRequest()
+        //     .authenticated()
+        //     .and().httpBasic();
+        http.authorizeRequests()
+            .antMatchers("/**").permitAll()
+           // .antMatchers("/**").hasAnyAuthority("USER", "ADMIN")
             .anyRequest()
             .authenticated()
             .and().httpBasic();
+            // end edit 
     }
 }
